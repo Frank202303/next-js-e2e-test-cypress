@@ -1,95 +1,69 @@
-import Image from 'next/image'
-import styles from './page.module.css'
+"use client";
+import Image from "next/image";
+import styles from "./page.module.css";
+import Link from "next/link";
+import React, { useState } from "react";
+import { redirect } from "next/navigation";
+import { useRouter } from "next/navigation";
 
 export default function Home() {
+  const router = useRouter(); // 使用 useRouter
+  const submitAction = (event: React.FormEvent<HTMLFormElement>) => {
+    event.preventDefault(); // 阻止表单的默认提交行为
+    console.log("email: ", email);
+    console.log("password: ", password);
+
+    if (email == "") {
+      setEmailError("Email required");
+    } else {
+      setEmailError("");
+    }
+    if (password == "") {
+      setPasswordError("Password required");
+    } else {
+      setPasswordError("");
+    }
+
+    if (email != "" && password != "") {
+      console.log("success***");
+      router.push("/success"); // 客户端跳转
+      // redirect("/success"); // redirect 是一个仅在 服务器端 工作的函数
+    }
+  };
+  const [email, setEmail] = useState("");
+  const [emailError, setEmailError] = useState("");
+  const [password, setPassword] = useState("");
+  const [passwordError, setPasswordError] = useState("");
   return (
-    <main className={styles.main}>
-      <div className={styles.description}>
-        <p>
-          Get started by editing&nbsp;
-          <code className={styles.code}>app/page.tsx</code>
-        </p>
-        <div>
-          <a
-            href="https://vercel.com?utm_source=create-next-app&utm_medium=appdir-template&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            By{' '}
-            <Image
-              src="/vercel.svg"
-              alt="Vercel Logo"
-              className={styles.vercelLogo}
-              width={100}
-              height={24}
-              priority
-            />
-          </a>
-        </div>
-      </div>
+    <form onSubmit={submitAction} className={styles.container}>
+      <input
+        type="text"
+        placeholder="Email"
+        name="email"
+        autoComplete="email"
+        onChange={(e) => setEmail(e.target.value)}
+      ></input>
+      {/* show error */}
 
-      <div className={styles.center}>
-        <Image
-          className={styles.logo}
-          src="/next.svg"
-          alt="Next.js Logo"
-          width={180}
-          height={37}
-          priority
-        />
-      </div>
+      {emailError != "" && (
+        <div className={styles.textDestructive}>{emailError}</div>
+      )}
+      <input
+        type="password"
+        placeholder="Password"
+        name="password"
+        autoComplete="current-password"
+        onChange={(e) => setPassword(e.target.value)}
+      ></input>
+      {passwordError != "" && (
+        <div className={styles.textDestructive}>{passwordError}</div>
+      )}
 
-      <div className={styles.grid}>
-        <a
-          href="https://nextjs.org/docs?utm_source=create-next-app&utm_medium=appdir-template&utm_campaign=create-next-app"
-          className={styles.card}
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <h2>
-            Docs <span>-&gt;</span>
-          </h2>
-          <p>Find in-depth information about Next.js features and API.</p>
-        </a>
+      <button type="submit">Register Now</button>
 
-        <a
-          href="https://nextjs.org/learn?utm_source=create-next-app&utm_medium=appdir-template&utm_campaign=create-next-app"
-          className={styles.card}
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <h2>
-            Learn <span>-&gt;</span>
-          </h2>
-          <p>Learn about Next.js in an interactive course with&nbsp;quizzes!</p>
-        </a>
-
-        <a
-          href="https://vercel.com/templates?framework=next.js&utm_source=create-next-app&utm_medium=appdir-template&utm_campaign=create-next-app"
-          className={styles.card}
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <h2>
-            Templates <span>-&gt;</span>
-          </h2>
-          <p>Explore starter templates for Next.js.</p>
-        </a>
-
-        <a
-          href="https://vercel.com/new?utm_source=create-next-app&utm_medium=appdir-template&utm_campaign=create-next-app"
-          className={styles.card}
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <h2>
-            Deploy <span>-&gt;</span>
-          </h2>
-          <p>
-            Instantly deploy your Next.js site to a shareable URL with Vercel.
-          </p>
-        </a>
-      </div>
-    </main>
-  )
+      <Link href="/login">
+        Have an account? <b>Login</b>
+      </Link>
+    </form>
+  );
 }
