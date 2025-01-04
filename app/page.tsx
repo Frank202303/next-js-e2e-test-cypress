@@ -42,24 +42,33 @@ export default function Home() {
         name="email"
         autoComplete="email"
         onChange={(e) => setEmail(e.target.value)}
+        data-cy="emailInput"
       ></input>
       {/* show error */}
 
       {emailError != "" && (
-        <div className={styles.textDestructive}>{emailError}</div>
+        <div data-cy="emailError" className={styles.textDestructive}>
+          {emailError}
+        </div>
       )}
+
       <input
         type="password"
         placeholder="Password"
         name="password"
         autoComplete="current-password"
         onChange={(e) => setPassword(e.target.value)}
+        data-cy="passwordInput"
       ></input>
       {passwordError != "" && (
-        <div className={styles.textDestructive}>{passwordError}</div>
+        <div data-cy="passwordError" className={styles.textDestructive}>
+          {passwordError}
+        </div>
       )}
 
-      <button type="submit">Register Now</button>
+      <button type="submit" data-cy="submit">
+        Register Now
+      </button>
 
       <Link href="/login">
         Have an account? <b>Login</b>
